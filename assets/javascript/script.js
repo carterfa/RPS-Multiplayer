@@ -1,5 +1,22 @@
-let p1Selected = false;
-let p2Selected = false;
+//Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyC3xqgeZ7TFBb5SL6UcvKxhAguD4WwG8Yc",
+    authDomain: "rockpaperscissors-f8fb3.firebaseapp.com",
+    databaseURL: "https://rockpaperscissors-f8fb3.firebaseio.com",
+    projectId: "rockpaperscissors-f8fb3",
+    storageBucket: "rockpaperscissors-f8fb3.appspot.com",
+    messagingSenderId: "621981149435",
+    appId: "1:621981149435:web:702709e9e790a2f724685e"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+//set variable to store database
+let database = firebase.database();
+
+let p1Select = false;
+let p2Select = false;
 
 let p1Choice = "";
 let p2Choice = "";
@@ -10,7 +27,7 @@ let p2Ready = false;
 //compares player choices
 function check() {
     $("#message1").text(p1Choice + " VS " + p2Choice);
-    
+
     if (p1Choice === p2Choice) {
         //there is a tie
         $("#message2").text("TIE!")
@@ -29,6 +46,10 @@ function check() {
 
 //waits for page to load before running
 $(document).ready(function () {
+
+    database.ref().set({
+        playerOneSelected: p1Select
+      });
 
     //player one buttons
     $(".play1Btn").on("click", function () {
