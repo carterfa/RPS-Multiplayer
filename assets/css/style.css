@@ -1,0 +1,18 @@
+h1, h2 {
+    text-align: center;
+}
+#p1Zone {
+    background-color: rgb(235, 155, 155);
+}
+
+#p2Zone {
+    background-color: rgb(130, 150, 230);
+}
+
+.btnContainer {
+    text-align: center;
+}
+
+.joinBtn {
+    display: inline-block;
+}
