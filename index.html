@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <title>Rock Paper Scissors</title>
+    <title>ROCK PAPER SCISSORS</title>
 </head>
 
 <body>
@@ -17,7 +17,7 @@
         <h1>ROCK PAPER SCISSORS</h1>
     </header>
     <div class="container">
-        <div class="row">
+        <div class="row" id="playArea">
             <div class="col-6" id="p1Zone">
                 <h2>PLAYER 1</h2>
                 <div class="btnContainer">
@@ -30,9 +30,27 @@
                     <button class="joinBtn" id="p2Join">JOIN GAME</button></div>
             </div>
         </div>
+        <h2 id="movesPlayed"></h2>
+        <h2 id="gameState"></h2>
+        <div class="row">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Player 1 Wins</th>
+                        <th scope="col">Player 2 Wins</th>
+                        <th scope="col">Ties</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="p1WinsText">0</td>
+                        <td id="p2WinsText">0</td>
+                        <td id="tiesText">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <h1 id="message1"></h1>
-    <h1 id="message2"></h1>
     <button id="resetBtn">RESET</button>
 </body>
 <!-- link to jQuery -->

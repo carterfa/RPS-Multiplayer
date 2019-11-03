@@ -15,32 +15,41 @@ firebase.initializeApp(firebaseConfig);
 //set variable to store database
 let database = firebase.database();
 
+let p1Wins = 0;
+let p2Wins = 0;
+let ties = 0;
+
 //compares player choices
 function check(p1Choice, p2Choice) {
     //displays what each player chose
-    $("#message1").text(p1Choice + " VS " + p2Choice);
+    $("#movesPlayed").text(p1Choice + " VS " + p2Choice);
 
     if (p1Choice === p2Choice) {
         //there is a tie
-        $("#message2").text("TIE!")
+        $("#gameState").text("TIE!")
         //player one wins
     } else if (
         (p1Choice === "ROCK" && p2Choice === "SCISSORS") ||
         (p1Choice === "PAPER" && p2Choice === "ROCK") ||
         (p1Choice === "SCISSORS" && p2Choice === "PAPER")) {
-        $("#message2").text("PLAYER 1 WINS!");
+        $("#gameState").text("PLAYER 1 WINS!");
+        p1Wins++;
     } else {
         //player two wins
-        $("#message2").text("PLAYER 2 WINS!");
+        $("#gameState").text("PLAYER 2 WINS!");
+        p2Wins++;
     }
 
-    //resets player choices in database
+    //resets player choices in database and updates wins/tie count
     p1Choice = "";
     p2Choice = "";
 
     database.ref().update({
         dbp1Choice: p1Choice,
-        dbp2Choice: p2Choice
+        dbp2Choice: p2Choice,
+        p1WinCount: p1Wins,
+        p2WinCount: p2Wins,
+        tieCount: ties
     });
 
 }
@@ -56,6 +65,9 @@ $(document).ready(function () {
         p2Select = snapshot.val().playerTwoSelected;
         p1Choice = snapshot.val().dbp1Choice;
         p2Choice = snapshot.val().dbp2Choice;
+        p1Wins = snapshot.val().p1WinCount;
+        p2Wins = snapshot.val().p2WinCount;
+        ties = snapshot.val().tieCount;
 
         if (p1Select === true) {
             //removes join button
@@ -71,6 +83,11 @@ $(document).ready(function () {
         if ((p1Choice !== "") && (p2Choice !== "")) {
             check(p1Choice, p2Choice);
         }
+
+        //updates game stats display
+        $("#p1WinsText").text(p1Wins);
+        $("#p2WinsText").text(p2Wins);
+        $("#tiesText").text(ties);
 
         //firebase error message
     }, function (errorObject) {
@@ -165,22 +182,19 @@ $(document).ready(function () {
         p2Select = false;
         p1Choice = "";
         p2Choice = "";
+        p1Wins = 0;
+        p2Wins = 0;
 
         //sends info to the database
         database.ref().set({
             playerOneSelected: p1Select,
             playerTwoSelected: p2Select,
             dbp1Choice: p1Choice,
-            dbp2Choice: p2Choice
+            dbp2Choice: p2Choice,
+            p1WinCount: p1Wins,
+            p2WinCount: p2Wins,
+            tieCount: ties
         });
-
-    })
-
-    //run fight
-    $("#fightBtn").on("click", function () {
-        //prevents refresh
-        event.preventDefault();
-
 
     })
 

@@ -2,11 +2,11 @@ h1, h2 {
     text-align: center;
 }
 #p1Zone {
-    background-color: rgb(235, 155, 155);
+    background-color: #dc3545;
 }
 
 #p2Zone {
-    background-color: rgb(130, 150, 230);
+    background-color: #007bff;
 }
 
 .btnContainer {
