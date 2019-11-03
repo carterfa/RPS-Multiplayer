@@ -27,7 +27,8 @@ function check(p1Choice, p2Choice) {
     if (p1Choice === p2Choice) {
         //there is a tie
         $("#gameState").text("TIE!")
-        //player one wins
+        //player one wins, add to win count
+        ties++;
     } else if (
         (p1Choice === "ROCK" && p2Choice === "SCISSORS") ||
         (p1Choice === "PAPER" && p2Choice === "ROCK") ||
@@ -35,7 +36,7 @@ function check(p1Choice, p2Choice) {
         $("#gameState").text("PLAYER 1 WINS!");
         p1Wins++;
     } else {
-        //player two wins
+        //player two wins, add to win count
         $("#gameState").text("PLAYER 2 WINS!");
         p2Wins++;
     }
