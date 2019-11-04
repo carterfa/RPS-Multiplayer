@@ -18,6 +18,7 @@ let database = firebase.database();
 let p1Wins = 0;
 let p2Wins = 0;
 let ties = 0;
+let reset = false;
 
 //compares player choices
 function check(p1Choice, p2Choice) {
@@ -42,9 +43,6 @@ function check(p1Choice, p2Choice) {
     }
 
     //resets player choices in database and updates wins/tie count
-    p1Choice = "";
-    p2Choice = "";
-
     database.ref().update({
         dbp1Choice: "",
         dbp2Choice: "",
@@ -74,24 +72,17 @@ function pageReset() {
                 <button class="joinBtn" id="p2Join">JOIN GAME</button></div></div>`
     $("#playArea").append(origButtons);
 
-    //resets variables
-    p1Select = false;
-    p2Select = false;
-    p1Choice = "";
-    p2Choice = "";
-    p1Wins = 0;
-    p2Wins = 0;
-    ties = 0;
 
-    //sends info to the database
+    //resets variables in the database
     database.ref().set({
-        playerOneSelected: p1Select,
-        playerTwoSelected: p2Select,
-        dbp1Choice: p1Choice,
-        dbp2Choice: p2Choice,
-        p1WinCount: p1Wins,
-        p2WinCount: p2Wins,
-        tieCount: ties
+        playerOneSelected: false,
+        playerTwoSelected: false,
+        dbp1Choice: "",
+        dbp2Choice: "",
+        p1WinCount: 0,
+        p2WinCount: 0,
+        tieCount: 0,
+        resetState: false
     });
 
 
@@ -111,6 +102,7 @@ $(document).ready(function () {
         p1Wins = snapshot.val().p1WinCount;
         p2Wins = snapshot.val().p2WinCount;
         ties = snapshot.val().tieCount;
+        reset = snapshot.val().resetState;
 
         if (p1Select === true) {
             //removes join button
@@ -125,6 +117,11 @@ $(document).ready(function () {
         //runs check if both players chose
         if ((p1Choice !== "") && (p2Choice !== "")) {
             check(p1Choice, p2Choice);
+        }
+
+        if (reset === true) {
+            //runs reset
+            pageReset();
         }
 
         //updates game stats display
@@ -224,8 +221,10 @@ $(document).ready(function () {
         //prevents refresh
         event.preventDefault();
 
-        //runs reset
-        pageReset();
+        //sends info the database
+        database.ref().update({
+            resetState: true
+        });
 
     })
 
