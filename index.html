@@ -30,8 +30,12 @@
                     <button class="joinBtn" id="p2Join">JOIN GAME</button></div>
             </div>
         </div>
-        <h2 id="movesPlayed"></h2>
-        <h2 id="gameState"></h2>
+        <div class="row messageDiv">
+            <h2 class="col-12" id="movesPlayed"></h2>
+        </div>
+        <div class="row messageDiv">
+            <h2 class="col-12" id="gameState"></h2>
+        </div>
         <div class="row">
             <table class="table table-dark">
                 <thead>
@@ -50,8 +54,13 @@
                 </tbody>
             </table>
         </div>
+        <div class="row">
+            <div class="col-12 resetContainer">
+                <button id="resetBtn">RESET</button>
+            </div>
+        </div>
     </div>
-    <button id="resetBtn">RESET</button>
+
 </body>
 <!-- link to jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

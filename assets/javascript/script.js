@@ -104,6 +104,8 @@ $(document).ready(function () {
 
         //removes other player
         $("#p2Zone").remove()
+        //sets other player to full screen
+        $("#p1Zone").attr("class", "col-12")
 
         //sends info the database
         database.ref().update({
@@ -124,6 +126,8 @@ $(document).ready(function () {
 
         //removes other player
         $("#p1Zone").remove()
+        //sets other player to full screen
+        $("#p2Zone").attr("class", "col-12")
 
         //sends info the database
         database.ref().update({
@@ -178,6 +182,23 @@ $(document).ready(function () {
         //prevents refresh
         event.preventDefault();
 
+        //clears messages
+        $("#movesPlayed").text('');
+        $("#gameState").text('');
+
+        //adds original buttons back in
+        $("#playArea").empty();
+        const origButtons = `<div class="col-6" id="p1Zone">
+                <h2>PLAYER 1</h2>
+                <div class="btnContainer">
+                    <button class="joinBtn" id="p1Join">JOIN GAME</button>
+                </div></div>
+            <div class="col-6" id="p2Zone">
+                <h2>PLAYER 2</h2>
+                <div class="btnContainer">
+                    <button class="joinBtn" id="p2Join">JOIN GAME</button></div></div>`
+        $("#playArea").append(origButtons);
+
         //resets variables
         p1Select = false;
         p2Select = false;
@@ -185,6 +206,7 @@ $(document).ready(function () {
         p2Choice = "";
         p1Wins = 0;
         p2Wins = 0;
+        ties = 0;
 
         //sends info to the database
         database.ref().set({

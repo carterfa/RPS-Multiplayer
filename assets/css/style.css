@@ -1,18 +1,47 @@
+body{
+    background-color: whitesmoke;
+}
+
 h1, h2 {
     text-align: center;
 }
 #p1Zone {
     background-color: #dc3545;
+    padding: 1em;
 }
 
 #p2Zone {
     background-color: #007bff;
+    padding: 1em;
 }
 
 .btnContainer {
     text-align: center;
 }
 
-.joinBtn {
+button {
+    background-color: whitesmoke;
+    border-radius: 4px;
+    border: none;
+    padding: .25em .75em .25em .75em;
+}
+
+button:active {
+    background-color: #abadaf;
+}
+
+.joinBtn, #resetBtn {
     display: inline-block;
+}
+
+#resetBtn{
+    background-color: orange;
+}
+
+.messageDiv {
+    background-color: #abadaf;
+}
+
+.resetContainer {
+    text-align: center;
 }
