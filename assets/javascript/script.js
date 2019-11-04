@@ -55,6 +55,48 @@ function check(p1Choice, p2Choice) {
 
 }
 
+//resets the page
+function pageReset() {
+    //clears messages
+    $("#movesPlayed").text('');
+    $("#gameState").text('');
+
+    //adds original buttons back in
+    $("#playArea").empty();
+    const origButtons = `<div class="col-6" id="p1Zone">
+            <h2>PLAYER 1</h2>
+            <div class="btnContainer">
+                <button class="joinBtn" id="p1Join">JOIN GAME</button>
+            </div></div>
+        <div class="col-6" id="p2Zone">
+            <h2>PLAYER 2</h2>
+            <div class="btnContainer">
+                <button class="joinBtn" id="p2Join">JOIN GAME</button></div></div>`
+    $("#playArea").append(origButtons);
+
+    //resets variables
+    p1Select = false;
+    p2Select = false;
+    p1Choice = "";
+    p2Choice = "";
+    p1Wins = 0;
+    p2Wins = 0;
+    ties = 0;
+
+    //sends info to the database
+    database.ref().set({
+        playerOneSelected: p1Select,
+        playerTwoSelected: p2Select,
+        dbp1Choice: p1Choice,
+        dbp2Choice: p2Choice,
+        p1WinCount: p1Wins,
+        p2WinCount: p2Wins,
+        tieCount: ties
+    });
+
+
+}
+
 //waits for page to load before running
 $(document).ready(function () {
 
@@ -182,42 +224,8 @@ $(document).ready(function () {
         //prevents refresh
         event.preventDefault();
 
-        //clears messages
-        $("#movesPlayed").text('');
-        $("#gameState").text('');
-
-        //adds original buttons back in
-        $("#playArea").empty();
-        const origButtons = `<div class="col-6" id="p1Zone">
-                <h2>PLAYER 1</h2>
-                <div class="btnContainer">
-                    <button class="joinBtn" id="p1Join">JOIN GAME</button>
-                </div></div>
-            <div class="col-6" id="p2Zone">
-                <h2>PLAYER 2</h2>
-                <div class="btnContainer">
-                    <button class="joinBtn" id="p2Join">JOIN GAME</button></div></div>`
-        $("#playArea").append(origButtons);
-
-        //resets variables
-        p1Select = false;
-        p2Select = false;
-        p1Choice = "";
-        p2Choice = "";
-        p1Wins = 0;
-        p2Wins = 0;
-        ties = 0;
-
-        //sends info to the database
-        database.ref().set({
-            playerOneSelected: p1Select,
-            playerTwoSelected: p2Select,
-            dbp1Choice: p1Choice,
-            dbp2Choice: p2Choice,
-            p1WinCount: p1Wins,
-            p2WinCount: p2Wins,
-            tieCount: ties
-        });
+        //runs reset function
+        pageReset();
 
     })
 
