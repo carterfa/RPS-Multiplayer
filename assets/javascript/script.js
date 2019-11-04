@@ -46,8 +46,8 @@ function check(p1Choice, p2Choice) {
     p2Choice = "";
 
     database.ref().update({
-        dbp1Choice: p1Choice,
-        dbp2Choice: p2Choice,
+        dbp1Choice: "",
+        dbp2Choice: "",
         p1WinCount: p1Wins,
         p2WinCount: p2Wins,
         tieCount: ties
@@ -145,9 +145,9 @@ $(document).ready(function () {
         p1Select = true;
 
         //removes other player
-        $("#p2Zone").remove()
+        $("#p2Zone").remove();
         //sets other player to full screen
-        $("#p1Zone").attr("class", "col-12")
+        $("#p1Zone").attr("class", "col-12");
 
         //sends info the database
         database.ref().update({
@@ -224,7 +224,7 @@ $(document).ready(function () {
         //prevents refresh
         event.preventDefault();
 
-        //runs reset function
+        //runs reset
         pageReset();
 
     })
