@@ -63,11 +63,11 @@ function joinGame(playerid) {
     <button class="playBtn" id="scissors">SCISSORS</button>`
     $(myP + " .btnContainer").append(playButtons);
     //adds the chatbox
-    const chatbox = `<form class="form-inline">
+    const chatBoxForm = `<form class="form-inline">
     <input type="text" class="form-control mb-2 mr-sm-2" id="chatInput" placeholder="Enter a Message">
     <button type="submit" class="btn btn-primary mb-2" id="submitBtn">Submit</button>
-    </form>`
-    $(myP + " .btnContainer").append(chatbox);
+    <div id="chatBox"></div></form>`
+    $(myP).append(chatBoxForm);
 
 }
 
@@ -90,6 +90,27 @@ function playGame(zoneId, rps) {
         database.ref().update({
             dbp2Choice: p2Choice
         });
+    }
+
+}
+
+function submitChat(zoneId, chatMessage) {
+
+    //only updates database if not empty
+    if (chatMessage) {
+
+        if (zoneId === "p1Zone") {
+            chatMessage = "Player 1: " + chatMessage;
+        } else {
+            chatMessage = "Player 2: " + chatMessage;
+        }
+        //sends info the database
+        database.ref().update({
+            dbchatMessage: chatMessage
+        });
+
+        //clears text input
+        $("#chatInput").val("");
     }
 
 }
@@ -182,6 +203,7 @@ $(document).ready(function () {
         p2Wins = snapshot.val().p2WinCount;
         ties = snapshot.val().tieCount;
         reset = snapshot.val().resetState;
+        chatMessage = snapshot.val().dbchatMessage;
 
         if (p1Select === true) {
             //removes join button
@@ -207,6 +229,14 @@ $(document).ready(function () {
         $("#p1WinsText").text(p1Wins);
         $("#p2WinsText").text(p2Wins);
         $("#tiesText").text(ties);
+
+        //adds to chat
+        $("#chatBox").prepend("<h6>" + chatMessage + "</h6>");
+        //clears the database
+        database.ref().update({
+            dbchatMessage: ""
+        });
+
 
         //firebase error message
     }, function (errorObject) {
@@ -253,18 +283,19 @@ $(document).ready(function () {
     })
 
     //submit button
-    $(document).on("click", "#submitBtn",function () {
+    $(document).on("click", "#submitBtn", function () {
         //prevents refresh
         event.preventDefault();
 
+        //detects which player it is
+        let currentZone = $(this).get(0).parentNode.parentNode;
+        let zoneId = $(currentZone).attr("id");
+        console.log(zoneId);
         let chatMessage = $("#chatInput").val();
 
-        //sends info the database
-        database.ref().update({
-            dbchatMessage: chatMessage
-        });
+        submitChat(zoneId, chatMessage);
 
-        $("#chatInput").val("");
+
 
     })
 
