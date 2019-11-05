@@ -15,10 +15,78 @@ firebase.initializeApp(firebaseConfig);
 //set variable to store database
 let database = firebase.database();
 
+//declare global variables
 let p1Wins = 0;
 let p2Wins = 0;
 let ties = 0;
 let reset = false;
+
+//join player function
+function joinGame(playerid) {
+
+    let myP = "";
+    let othrP = "";
+
+    if (playerid === "p1Join") {
+        //sets player one true
+        p1Select = true;
+
+        //sends info the database
+        database.ref().update({
+            playerOneSelected: p1Select,
+        });
+
+        myP = "#p1Zone";
+        othrP = "#p2Zone";
+
+    } else {
+        //sets player two true
+        p2Select = true;
+
+        //sends info the database
+        database.ref().update({
+            playerTwoSelected: p2Select,
+        });
+
+        myP = "#p2Zone";
+        othrP = "#p1Zone";
+    }
+
+    //removes other player
+    $(othrP).remove();
+    //sets your player to full screen
+    $(myP).attr("class", "col-12");
+
+    //adds player buttons for user
+    const playButtons = `<button class="playBtn" id="rock">ROCK</button>
+    <button class="playBtn" id="paper">PAPER</button>
+    <button class="playBtn" id="scissors">SCISSORS</button>`
+    $(myP + " .btnContainer").append(playButtons);
+
+}
+
+//player buttons function
+function playGame(zoneId, rps) {
+
+    if (zoneId === "p1Zone") {
+        //sets player 1 choice
+        p1Choice = rps;
+
+        //sends info the database
+        database.ref().update({
+            dbp1Choice: p1Choice,
+        });
+    } else {
+        //sets player 2 choice
+        p2Choice = rps;
+
+        //sends info the database
+        database.ref().update({
+            dbp2Choice: p2Choice
+        });
+    }
+
+}
 
 //compares player choices
 function check(p1Choice, p2Choice) {
@@ -28,17 +96,20 @@ function check(p1Choice, p2Choice) {
     if (p1Choice === p2Choice) {
         //there is a tie
         $("#gameState").text("TIE!")
-        //player one wins, add to win count
+        $(".messageDiv").css("background-color","#abadaf");
         ties++;
+        //player one wins, add to win count
     } else if (
         (p1Choice === "ROCK" && p2Choice === "SCISSORS") ||
         (p1Choice === "PAPER" && p2Choice === "ROCK") ||
         (p1Choice === "SCISSORS" && p2Choice === "PAPER")) {
         $("#gameState").text("PLAYER 1 WINS!");
+        $(".messageDiv").css("background-color","#dc3545");
         p1Wins++;
     } else {
         //player two wins, add to win count
         $("#gameState").text("PLAYER 2 WINS!");
+        $(".messageDiv").css("background-color","#007bff");
         p2Wins++;
     }
 
@@ -58,6 +129,7 @@ function pageReset() {
     //clears messages
     $("#movesPlayed").text('');
     $("#gameState").text('');
+    $(".messageDiv").css("background-color","#abadaf");
 
     //adds original buttons back in
     $("#playArea").empty();
@@ -137,82 +209,27 @@ $(document).ready(function () {
     });
 
     //player one chooses to join the game
-    $(document).on("click", "#p1Join", function () {
-        //sets player one true
-        p1Select = true;
+    $(document).on("click", ".joinBtn", function () {
 
-        //removes other player
-        $("#p2Zone").remove();
-        //sets other player to full screen
-        $("#p1Zone").attr("class", "col-12");
+        //retrieves player chosen from id
+        playerid = $(this).attr("id");
+        joinGame(playerid);
 
-        //sends info the database
-        database.ref().update({
-            playerOneSelected: p1Select,
-        });
-
-        //adds player one buttons to user
-        const playerOneButtons = `<button class="play1Btn" id="p1Rock">ROCK</button>
-        <button class="play1Btn" id="p1Paper">PAPER</button>
-        <button class="play1Btn" id="p1Scissors">SCISSORS</button>`
-        $("#p1Zone .btnContainer").append(playerOneButtons);
     })
 
-    //player two chooses to join the game
-    $(document).on("click", "#p2Join", function () {
-        //sets player one true
-        p2Select = true;
+    //player buttons
+    $(document).on("click", ".playBtn", function () {
 
-        //removes other player
-        $("#p1Zone").remove()
-        //sets other player to full screen
-        $("#p2Zone").attr("class", "col-12")
-
-        //sends info the database
-        database.ref().update({
-            playerTwoSelected: p2Select,
-        });
-
-        //adds player one buttons to user
-        const playerTwoButtons = `<button class="play2Btn" id="p2Rock">ROCK</button>
-        <button class="play2Btn" id="p2Paper">PAPER</button>
-        <button class="play2Btn" id="p2Scissors">SCISSORS</button>`
-        $("#p2Zone .btnContainer").append(playerTwoButtons);
-    })
-
-
-    //player one buttons
-    $(document).on("click", ".play1Btn", function () {
         //prevents refresh
         event.preventDefault();
 
-        //sets player 1 choice
-        p1Choice = $(this).text();
+        //detects which player it is
+        let currentZone = $(this).get(0).parentNode.parentNode;
+        let zoneId = $(currentZone).attr("id");
+        let rps = $(this).text();
 
-        //sends info the database
-        database.ref().update({
-            dbp1Choice: p1Choice,
-        });
-
-        //console.log("P1" + p1Choice);
-
-    })
-
-    //player two buttons
-    $(document).on("click", ".play2Btn", function () {
-        //prevents refresh
-        event.preventDefault();
-
-        //sets player 2 choice
-        p2Choice = $(this).text();
-
-        //sends info the database
-        database.ref().update({
-            dbp2Choice: p2Choice
-        });
-
-
-        //console.log("P2" + p2Choice);
+        //runs gameplay
+        playGame(zoneId, rps);
 
     })
 
