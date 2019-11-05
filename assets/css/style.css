@@ -19,23 +19,39 @@ h1, h2 {
     text-align: center;
 }
 
-button {
-    background-color: whitesmoke;
+.playBtn {
+    background-color: #28a745;
     border-radius: 4px;
     border: none;
     padding: .25em .75em .25em .75em;
+    color: white;
 }
 
 button:active {
     background-color: #abadaf;
 }
 
-.joinBtn, #resetBtn {
+.joinBtn{
+    background-color: whitesmoke;
+    border-radius: 4px;
+    border: none;
+    padding: .25em .75em .25em .75em;
     display: inline-block;
+    color: black;
+    
 }
 
 #resetBtn{
     background-color: orange;
+    border-radius: 4px;
+    border: none;
+    padding: .25em .75em .25em .75em;
+    display: inline-block;
+}
+
+#submitBtn {
+    color: black;
+    background-color: whitesmoke;
 }
 
 .messageDiv {
@@ -44,4 +60,9 @@ button:active {
 
 .resetContainer {
     text-align: center;
+}
+
+.form-inline {
+    display: block;
+    margin-top: 1.5em;
 }

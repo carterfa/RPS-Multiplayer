@@ -62,6 +62,12 @@ function joinGame(playerid) {
     <button class="playBtn" id="paper">PAPER</button>
     <button class="playBtn" id="scissors">SCISSORS</button>`
     $(myP + " .btnContainer").append(playButtons);
+    //adds the chatbox
+    const chatbox = `<form class="form-inline">
+    <input type="text" class="form-control mb-2 mr-sm-2" id="chatInput" placeholder="Enter a Message">
+    <button type="submit" class="btn btn-primary mb-2" id="submitBtn">Submit</button>
+    </form>`
+    $(myP + " .btnContainer").append(chatbox);
 
 }
 
@@ -96,7 +102,7 @@ function check(p1Choice, p2Choice) {
     if (p1Choice === p2Choice) {
         //there is a tie
         $("#gameState").text("TIE!")
-        $(".messageDiv").css("background-color","#abadaf");
+        $(".messageDiv").css("background-color", "#abadaf");
         ties++;
         //player one wins, add to win count
     } else if (
@@ -104,12 +110,12 @@ function check(p1Choice, p2Choice) {
         (p1Choice === "PAPER" && p2Choice === "ROCK") ||
         (p1Choice === "SCISSORS" && p2Choice === "PAPER")) {
         $("#gameState").text("PLAYER 1 WINS!");
-        $(".messageDiv").css("background-color","#dc3545");
+        $(".messageDiv").css("background-color", "#dc3545");
         p1Wins++;
     } else {
         //player two wins, add to win count
         $("#gameState").text("PLAYER 2 WINS!");
-        $(".messageDiv").css("background-color","#007bff");
+        $(".messageDiv").css("background-color", "#007bff");
         p2Wins++;
     }
 
@@ -129,7 +135,7 @@ function pageReset() {
     //clears messages
     $("#movesPlayed").text('');
     $("#gameState").text('');
-    $(".messageDiv").css("background-color","#abadaf");
+    $(".messageDiv").css("background-color", "#abadaf");
 
     //adds original buttons back in
     $("#playArea").empty();
@@ -154,7 +160,8 @@ function pageReset() {
         p1WinCount: 0,
         p2WinCount: 0,
         tieCount: 0,
-        resetState: false
+        resetState: false,
+        dbchatMessage: ""
     });
 
 
@@ -242,6 +249,22 @@ $(document).ready(function () {
         database.ref().update({
             resetState: true
         });
+
+    })
+
+    //submit button
+    $(document).on("click", "#submitBtn",function () {
+        //prevents refresh
+        event.preventDefault();
+
+        let chatMessage = $("#chatInput").val();
+
+        //sends info the database
+        database.ref().update({
+            dbchatMessage: chatMessage
+        });
+
+        $("#chatInput").val("");
 
     })
 
