@@ -20,6 +20,9 @@ let p1Wins = 0;
 let p2Wins = 0;
 let ties = 0;
 let reset = false;
+let p1Select;
+let p2Select;
+let txtcolor;
 
 //join player function
 function joinGame(playerid) {
@@ -101,12 +104,15 @@ function submitChat(zoneId, chatMessage) {
 
         if (zoneId === "p1Zone") {
             chatMessage = "Player 1: " + chatMessage;
+            txtcolor = "#dc3545";
         } else {
             chatMessage = "Player 2: " + chatMessage;
+            txtcolor = "#007bff";
         }
         //sends info the database
         database.ref().update({
-            dbchatMessage: chatMessage
+            dbchatMessage: chatMessage,
+            dbtxtcolor: txtcolor
         });
 
         //clears text input
@@ -182,7 +188,8 @@ function pageReset() {
         p2WinCount: 0,
         tieCount: 0,
         resetState: false,
-        dbchatMessage: ""
+        dbchatMessage: "",
+        dbtxtcolor: ""
     });
 
 
@@ -204,6 +211,7 @@ $(document).ready(function () {
         ties = snapshot.val().tieCount;
         reset = snapshot.val().resetState;
         chatMessage = snapshot.val().dbchatMessage;
+        txtcolor = snapshot.val().dbtxtcolor;
 
         if (p1Select === true) {
             //removes join button
@@ -231,10 +239,13 @@ $(document).ready(function () {
         $("#tiesText").text(ties);
 
         //adds to chat
-        $("#chatBox").prepend("<h6>" + chatMessage + "</h6>");
+        const completeMessage = `<h6 style='color:${txtcolor};'>${chatMessage}</h6>`
+        $("#chatBox").prepend(completeMessage);
+        
         //clears the database
         database.ref().update({
-            dbchatMessage: ""
+            dbchatMessage: "",
+            dbtxtcolor: ""
         });
 
 
