@@ -1,8 +1,8 @@
 ## Rock Paper Scissors Multiplayer
 
-### Overview
-
 ![Screenshot](./screenshots/rpsmultiplayer.jpg)
+
+### Overview
 
 A browser game that uses HTML, CSS, JavaScript within the Bootstrap CSS Framework.  The multiplayer features are made possible using the real-time database provided by Firebase.
 
